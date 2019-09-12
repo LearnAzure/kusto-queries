@@ -3,7 +3,7 @@ blah, blah
 ## Table of Contents
 1. [List Monitored Application Gateways (Individual List)](#list-monitored-application-gateways-(individual-list))
 1. [List Monitored Application Gateways (Comparitive List - Join)](#list-monitored-application-gateways-(comparitive-list---join))
-1. [List Unmonitored Application Gateways (XOR List - Join)](#list-unmonitored-application-gateways-(xor-list---join))
+1. [List Unmonitored Application Gateways (XOR List)](#list-unmonitored-application-gateways-(xor-list))
 1. [Average Throughput Per Second (Bytes)](#average-throughput-per-second-(bytes))
 1. [Average Throughput Per Second (Mb)](#average-throughput-per-second-(mb))
 1. [Unhealthy Hosts (Compared to Healthy)](#unhealthy-hosts-(compared-to-healthy))
@@ -11,7 +11,7 @@ blah, blah
 1. [Healthy Hosts (For All Gateways)](#healthy-hosts-(for-all-gateways))
 ___
 ### List Monitored Application Gateways (Individual List)
-List all application gateways currently being monitored.  This query can be executed against `AzureMetrics` or `AzureDiagnostics`.  
+List all application gateways currently being monitored.  This query can be executed against `AzureMetrics` _or_ `AzureDiagnostics`.  
 
 **AzureMetrics**
 ```
@@ -48,7 +48,7 @@ AzureMetrics
 
 <span style="font-size:.85em;font-weight:bold;color:white;background:slateblue;padding:5px">#table</span>
 
-### List Unmonitored Application Gateways (XOR List - Join)
+### List Unmonitored Application Gateways (XOR List)
 List all application gateways currently being monitored, but only have one setting turned on - _either_ `AzureMetrics` or `AzureDiagnostics` - but, not both.  This creates a union of outer joins against both tables and returns results that are exclusive to either table and not found in both.  Additionally, the query reports which setting is missing for the application gateway.
 
 ```
