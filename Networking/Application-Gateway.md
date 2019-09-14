@@ -9,6 +9,9 @@ blah, blah
 1. [Unhealthy Hosts (Compared to Healthy)](#unhealthy-hosts-(compared-to-healthy))
 1. [Unhealthy Hosts (For All Gateways)](#unhealthy-hosts-(for-all-gateways))
 1. [Healthy Hosts (For All Gateways)](#healthy-hosts-(for-all-gateways))
+1. [All Errors (By Gateway)](#all-errors-(by-gateway))
+1. [Bad Gateway (By Gateway)](#bad-gateway-(by-gateway))
+1. [All Operations (For All Gateways)](#all-operations-(for-all-gateways))
 ___
 ### List Monitored Application Gateways (Individual List)
 List all application gateways currently being monitored.  This query can be executed against `AzureMetrics` _or_ `AzureDiagnostics`.  
@@ -145,23 +148,42 @@ AzureMetrics
 <span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
 <span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
 
-### All Errors
-Display requests that resulted in some type of error (error code 400 or above).  
-Results are grouped by hour.
+### All Errors (By Gateway)
+Display requests that resulted in some type of error (error code 400 or above).
 ```
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayAccessLog"
 | where httpStatus_d >= 400
-| summarize event_count=count() by serverStatus_s, bin(TimeGenerated, 1h)
+| extend Status = toint(httpStatus_d)
+| summarize Count=count() by tostring(Status), Resource
+| project Resource, Status, Count
 ```
+<span style="font-size:.85em;font-weight:bold;color:white;background:slateblue;padding:5px">#table</span>
 
-### Bad Gateway
-Find requests that resulted in a server error of _502 - Bad Gateway_.
+### Bad Gateway (By Gateway)
+Find requests that resulted in a server error of _502 - Bad Gateway_. The results display the total errors in increments of 5-minute blocks for the past 24 hours.
 ```
 AzureDiagnostics 
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayAccessLog" 
 | where serverStatus_s == 502
+| summarize count() by Resource, bin(TimeGenerated, 5m)
 ```
+<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
+<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
+<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+
+### All Operations (For All Gateways)
+Report all operations on the gateways in the subscription. The results display the total number of operations in increments of 15-minute blocks for the past 24 hours.
+```
+AzureDiagnostics
+| where ResourceType == "APPLICATIONGATEWAYS"
+| summarize count() by OperationName, bin(TimeGenerated, 15m)
+```
+
+<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
+<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
+<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+
 
 Find errored requests by backend VM per 5-minute intervals
 ```
