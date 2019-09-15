@@ -1,5 +1,8 @@
 # Application Gateway
-blah, blah
+The queries below allow you to query various diagnostic and metric data for the Application Gateway, including the Web Application Firewall.  These queries have been updated to be compatible with WAF v2.
+
+Optimal rendering options are also included below each query.
+
 ## Table of Contents
 1. [List Monitored Application Gateways (individual list)](#list-monitored-application-gateways-(individual-list))
 1. [List Monitored Application Gateways (comparitive list - join)](#list-monitored-application-gateways-(comparitive-list---join))
@@ -141,6 +144,7 @@ AzureMetrics
 ```
 <span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
 <span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+<span style="font-size:.85em;font-weight:bold;color:white;background:deepskyblue;padding:5px">#piechart</span>
 
 ### Unhealthy Hosts (for all gateways)
 Show when hosts connected to the application gateway become unreachable.  This query will produce the number of nodes that are unhealthy for _all_ application gateways.  The results display the average disconnected state in increments of 5-minute blocks for the past 24 hours.
@@ -409,6 +413,7 @@ AzureDiagnostis
 <span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
 <span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
 <span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+<span style="font-size:.85em;font-weight:bold;color:white;background:deepskyblue;padding:5px">#piechart</span>
 
 ### Blocked Firewall Rules
 Report all requests that resulted in a firewall block due to an OWASP rule.
@@ -421,6 +426,7 @@ AzureDiagnostics
 <span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
 <span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
 <span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+<span style="font-size:.85em;font-weight:bold;color:white;background:deepskyblue;padding:5px">#piechart</span>
 
 ### Count Blocked Firewall Rules
 
@@ -435,3 +441,4 @@ AzureDiagnostics
 <span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
 <span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
 <span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+<span style="font-size:.85em;font-weight:bold;color:white;background:deepskyblue;padding:5px">#piechart</span>
