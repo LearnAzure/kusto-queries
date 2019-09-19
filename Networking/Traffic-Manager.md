@@ -8,13 +8,14 @@ Optimal rendering options are also included below each query.
 1. [Total Queries by Endpoint (by profile)](#total-queries-by-endpoint-(by-profile))
 ___
 ### Status Report (by profile)
-Reports the status of a Traffic Manager Profile.  For each profile, the query reports either a `1` for the profile being _Up_ or `0` for the profile being _Down_. Being that a downstate is a high-priority incident, the results display the _minimum_ (e.g. `0`) of 1-minute blocks by each traffic manager profile.
+Reports the status of a Traffic Manager Profile endpoint.  For each profile, the query reports either a `1` for the endpoint being _Up_ or `0` for the endpoint being _Down_. Being that a downstate is a high-priority incident, the results display the _minimum_ (e.g. `0`) of 1-minute blocks by each traffic manager profile.
 
 ```
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ProbeHealthStatusEvents"
+| extend Endpoint = strcat(Resource, "/", EndpointName_s)
 | extend Up = case(Status_s == "Up", 1, 0)
-| summarize min(Up) by Resource, bin(TimeGenerated, 1m)
+| summarize min(Up) by Endpoint, bin(TimeGenerated, 1m)
 ```
 <span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
 <span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
