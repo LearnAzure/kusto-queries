@@ -24,6 +24,7 @@ repo_url: https://github.com/LearnAzure/kusto-queries
 extra_css: [extra.css]
 plugins:
   - macros
+  - pdf-export
 extra:
   chart:
     bar: <type-barchart></type-barchart>
