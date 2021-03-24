@@ -1,0 +1,53 @@
+.md-nav.md-nav--secondary {
+    font-size:.6rem;
+}
+
+.md-typeset h3 {
+    margin: 2.6em 0 .8em;
+    font-weight:600;
+}
+
+type-table {
+    background:slateblue;
+}
+
+type-table::after{
+    content: "#inline-table";
+
+}
+
+type-timechart {
+    background:teal;
+}
+
+type-timechart::after {
+    content: "#timechart";
+}
+
+type-barchart {
+    background:deeppink;
+}
+
+type-barchart::after {
+    content: "#barchart";
+}
+
+type-areachart {
+    background:darkorange;;
+}
+
+type-areachart::after {
+    content: "#areachart";
+}
+
+type-table, 
+type-timechart,
+type-barchart,
+type-areachart
+{
+    font-size:.85em;
+    font-weight:bold;
+    color:white;
+    display: block;
+    padding:5px;
+}

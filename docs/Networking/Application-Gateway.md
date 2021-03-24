@@ -3,37 +3,7 @@ The queries below allow you to query various diagnostic and metric data for the 
 
 Optimal rendering options are also included below each query.
 
-## Table of Contents
-1. [List Monitored Application Gateways (individual list)](#list-monitored-application-gateways-(individual-list))
-1. [List Monitored Application Gateways (comparitive list - join)](#list-monitored-application-gateways-(comparitive-list---join))
-1. [List Unmonitored Application Gateways (XOR list)](#list-unmonitored-application-gateways-(xor-list))
-1. [Average Throughput per second (Bytes)](#average-throughput-per-second-(bytes))
-1. [Average Throughput per second (Mb)](#average-throughput-per-second-(mb))
-1. [Unhealthy Hosts (Compared to Healthy)](#unhealthy-hosts-(compared-to-healthy))
-1. [Unhealthy Hosts (for all gateways)](#unhealthy-hosts-(for-all-gateways))
-1. [Healthy Hosts (for all gateways)](#healthy-hosts-(for-all-gateways))
-1. [All Errors (by gateway)](#all-errors-(by-gateway))
-1. [All Errors (by backend)](#all-errors-(by-backend))
-1. [Bad Gateway (by gateway)](#bad-gateway-(by-gateway))
-1. [All Operations (for all gateways)](#all-operations-(for-all-gateways))
-1. [Total Connections (by gateway)](#total-connections-(by-gateway))
-1. [Average Connection Count (by gateway)](#average-connection-count-(by-gateway))
-1. [Average Backend Connection Time (by gateway)](#average-backend-connection-time-(by-gateway))
-1. [Average Total Time (by gateway)](#average-total-time-(by-gateway))
-1. [Average Latency (per backend server)](#average-latency-(per-backend-server))
-1. [Total Requests (by gateway)](#total-requests-(by-gateway))
-1. [Average Requests (by gateway)](#average-requests-(by-gateway))
-1. [Total Failed Requests (by gateway)](#total-failed-requests-(by-gateway))
-1. [Average Failed Requests (by gateway)](#average-failed-requests-(by-gateway))
-1. [Total Successful Requests (per backend server)](#total-successful-requests-(per-backend-server))
-1. [Total Failed Requests (per backend server)](#total-failed-requests-(per-backend-server))
-1. [Total Requests (per API)](#total-requests-(per-api))
-1. [Failed Requests (per API)](#failed-requests-(per-api))
-1. [Failed Requests, include Status (per API)](#failed-requests-include-status-(per-api))
-1. [Triggered Firewall Rules](#triggered-firewall-rules)
-1. [Blocked Firewall Rules](#blocked-firewall-rules)
-1. [Count Blocked Firewall Rules](#count-blocked-firewall-rules)
-___
+
 ### List Monitored Application Gateways (individual list)
 List all application gateways currently being monitored.  This query can be executed against `AzureMetrics` _or_ `AzureDiagnostics`.  
 
@@ -51,7 +21,7 @@ AzureDiagnostics
 | distinct Resource, ResourceGroup
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:slateblue;padding:5px">#table</span>
+{{ chart.table }}
 
 ### List Monitored Application Gateways (comparitive list - join)
 List all application gateways currently being monitored.  This query joins both, `AzureMetrics` and `AzureDiagnostics`, to create an all-inclusive list of gateways being monitored.
@@ -70,7 +40,7 @@ AzureMetrics
   )
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:slateblue;padding:5px">#table</span>
+{{ chart.table }}
 
 ### List Unmonitored Application Gateways (XOR list)
 List all application gateways currently being monitored, but only have one setting turned on - _either_ `AzureMetrics` or `AzureDiagnostics` - but, not both.  This creates a union of outer joins against both tables and returns results that are exclusive to either table and not found in both.  Additionally, the query reports which setting is missing for the application gateway.
@@ -104,7 +74,7 @@ AzureMetrics
 | project Resource, ResourceGroup, MissingSetting
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:slateblue;padding:5px">#table</span>
+{{ chart.table }}
 
 ### Average Throughput per second (Bytes)
 Display the average throughput per second of the application gateways.  The results display the average of 5-minute blocks by each application gateway resource.  
@@ -115,9 +85,9 @@ AzureMetrics
 | summarize avg(Average) by Resource, bin(TimeGenerated, 5m)
 | project TimeGenerated, avg_Average, Resource
 ```
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 ### Average Throughput per second (Mb)
 The same as the query above, but converted to megabytes (Base 10).
@@ -129,9 +99,9 @@ AzureMetrics
 | extend ThroughputMb = todecimal((avg_Average/1000)/1000)
 | project TimeGenerated, ThroughputMb, Resource
 ```
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 ### Unhealthy Hosts (Compared to Healthy)
 Show when hosts connected to the application gateway become unreachable.  This query will produce a comparison graph between the number of nodes that are healthy and those that are unhealthy for a _single_ application gateway.  The results display the average health in increments of 5-minute blocks for the past 24 hours.
@@ -142,8 +112,8 @@ AzureMetrics
 | summarize avg(Total) by Resource, MetricName, bin(TimeGenerated, 5m)
 | project TimeGenerated, MetricName, avg_Total
 ```
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.area }}
 <span style="font-size:.85em;font-weight:bold;color:white;background:deepskyblue;padding:5px">#piechart</span>
 
 ### Unhealthy Hosts (for all gateways)
@@ -155,8 +125,8 @@ AzureMetrics
 | summarize avg(Total) by Resource, bin(TimeGenerated, 5m)
 | project TimeGenerated, Resource, avg_Total
 ```
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.area }}
 
 ### Healthy Hosts (for all gateways)
 Show healthy, reachable hosts connected to the application gateway.  This query will produce the number of nodes that are healthy for _all_ application gateways.  The results display the average connected state in increments of 5-minute blocks for the past 24 hours.
@@ -167,8 +137,8 @@ AzureMetrics
 | summarize avg(Total) by Resource, bin(TimeGenerated, 5m)
 | project TimeGenerated, Resource, avg_Total
 ```
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.area }}
 
 ### All Errors (by gateway)
 Display requests that resulted in some type of error (error code 400 or above).
@@ -203,9 +173,9 @@ AzureDiagnostics
 | where serverStatus_s == 502
 | summarize count() by Resource, bin(TimeGenerated, 5m)
 ```
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 ### All Operations (for all gateways)
 Report all operations on the gateways in the subscription. The results display the total number of operations in increments of 15-minute blocks for the past 24 hours.
@@ -215,9 +185,9 @@ AzureDiagnostics
 | summarize count() by OperationName, bin(TimeGenerated, 15m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 
 ### Total Connections (by gateway)
@@ -229,9 +199,9 @@ AzureMetrics
 | summarize sum(Total) by Resource, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 
 ### Average Connection Count (by gateway)
@@ -243,9 +213,9 @@ AzureMetrics
 | summarize avg(Average) by Resource, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 
 ### Average Backend Connection Time (by gateway)
@@ -257,9 +227,9 @@ AzureMetrics
 | summarize avg(Average) by Resource, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 ### Average Total Time (by gateway)
 Report the average time for a request - beginning to end - per each application gateway.  The results display the average number of connections in increments of 5-minute blocks for the past 24 hours.
@@ -270,9 +240,9 @@ AzureMetrics
 | summarize avg(Average) by Resource, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 ### Average Latency (per backend server)
 Report the average latency per backend servers connected to your application gateway(s). The results display the average latency in seconds of servers connected to the backend pools in increments of 5-minute blocks for the past 24 hours.
@@ -282,9 +252,9 @@ AzureDiagnostics
 | summarize avg(todouble(serverResponseTime_s)) by serverRouted_s, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 ### Total Requests (by gateway)
 Report the total number of requests per application gateway.  The results display the total number of requests in increments of 5-minute blocks for the past 24 hours.
@@ -295,9 +265,9 @@ AzureMetrics
 | summarize sum(Total) by Resource, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 ### Average Requests (by gateway)
 Report the average number of requests per application gateway.  The results display the average number of requests in increments of 5-minute blocks for the past 24 hours.
@@ -308,9 +278,9 @@ AzureMetrics
 | summarize avg(Average) by Resource, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 
 ### Total Failed Requests (by gateway)
@@ -322,9 +292,9 @@ AzureMetrics
 | summarize sum(Total) by Resource, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 ### Average Failed Requests (by gateway)
 Report the average number of failed requests per application gateway.  The results display the average number of failed requests in increments of 5-minute blocks for the past 24 hours.
@@ -335,9 +305,9 @@ AzureMetrics
 | summarize avg(Average) by Resource, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 ### Total Successful Requests (per backend server)
 Report the total number of successful requests per backend servers connected to your application gateway(s). The results display the total number of successful requests to servers connected to the backend pools in increments of 5-minute blocks for the past 24 hours.
@@ -348,9 +318,9 @@ AzureDiagnostics
 | summarize count() by serverRouted_s, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 ### Total Failed Requests (per backend server)
 Report the total number of failed requests per backend servers connected to your application gateway(s). The results display the total number of failed requests to servers connected to the backend pools in increments of 5-minute blocks for the past 24 hours.
@@ -361,9 +331,9 @@ AzureDiagnostics
 | summarize count() by serverRouted_s, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 ### Total Requests (per API)
 Report the total number of requests per API endpoint. The results display the total number of requests to each served endpoint in increments of 5-minute blocks for the past 24 hours.
@@ -374,9 +344,9 @@ AzureDiagnostics
 ```
 
 <span style="font-size:.85em;font-weight:bold;color:white;background:slateblue;padding:5px">#table</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 ### Failed Requests (per API)
 Report the failed number of requests per API endpoint. The results display the failed number of requests to each served endpoint in increments of 5-minute blocks for the past 24 hours.
@@ -388,9 +358,9 @@ AzureDiagnostics
 ```
 
 <span style="font-size:.85em;font-weight:bold;color:white;background:slateblue;padding:5px">#table</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 
 ### Failed Requests, include Status (per API)
 Report the failed number of requests per API endpoint. The results display the failed number of requests to each served endpoint in increments of 5-minute blocks for the past 24 hours.
@@ -410,9 +380,9 @@ AzureDiagnostis
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayFirewallLog"
 | summarize Count=count() by ruleId_s, bin(TimeGenerated, 5m)
 ```
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 <span style="font-size:.85em;font-weight:bold;color:white;background:deepskyblue;padding:5px">#piechart</span>
 
 ### Blocked Firewall Rules
@@ -423,9 +393,9 @@ AzureDiagnostics
 | where action_s == "Blocked" 
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 <span style="font-size:.85em;font-weight:bold;color:white;background:deepskyblue;padding:5px">#piechart</span>
 
 ### Count Blocked Firewall Rules
@@ -438,7 +408,7 @@ AzureDiagnostics
 | summarize Count=count() by ruleId_s, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.bar }}
+{{ chart.area }}
 <span style="font-size:.85em;font-weight:bold;color:white;background:deepskyblue;padding:5px">#piechart</span>

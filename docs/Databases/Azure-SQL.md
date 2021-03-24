@@ -3,9 +3,6 @@ The queries below allow you to query various diagnostic and metric data for Azur
 
 Optimal rendering options are also included below each query.
 
-## Table of Contents
-1. [Average CPU Utilization by Database](#average-cpu-utilization-by-database)
-___
 ### Average CPU Utilization by Database
 List all application gateways currently being monitored.  This query can be executed against `AzureMetrics` _or_ `AzureDiagnostics`.  
 
@@ -17,8 +14,8 @@ AzureMetrics
 | summarize avg(Average) by Resource, bin(TimeGenerated, 5m) 
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.area }}
 
 ### Size in MB by Database
 Display the size in MB for each database.  The results display the average size in increments of 1-hour blocks for the past 24 hours.
@@ -33,8 +30,8 @@ AzureMetrics
 | project TimeGenerated, Resource, AverageMB 
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.area }}
 
 ### Successful Connections by Database
 Show the number of successful connecions by database.  The results display the average number of connections in increments of 5-minute blocks for the past 24 hours.
@@ -47,8 +44,8 @@ AzureMetrics
 | summarize avg(Total) by Resource, bin(TimeGenerated, 5m) 
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.area }}
 
 ### Unsuccessful Connections by Database
 Show the number of successful connecions by database.  The results display the average number of connections in increments of 5-minute blocks for the past 24 hours.
@@ -61,8 +58,8 @@ AzureMetrics
 | summarize avg(Total) by Resource, bin(TimeGenerated, 5m) 
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.area }}
 
 ### Blocked Firewall Attempts by Database
 Show the number of connection attempts, by database, block by the firewall.  The results display the average number of blocks in increments of 5-minute blocks for the past 24 hours.
@@ -75,8 +72,8 @@ AzureMetrics
 | summarize avg(Total) by Resource, bin(TimeGenerated, 5m) 
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.area }}
 
 ### CPU Utilization Percentage by Database
 Display the CPU utilization percentage by database.  The results display the average utilization in increments of 1-minute blocks for the past 1 hour.
@@ -91,8 +88,8 @@ AzureMetrics
 | project TimeGenerated, Resource, AvgCPU 
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:teal;padding:5px">#timechart</span>
-<span style="font-size:.85em;font-weight:bold;color:white;background:darkorange;padding:5px">#areachart</span>
+{{ chart.time }}
+{{ chart.area }}
 
 
 ### List All SQL Vulnerabilities
@@ -136,7 +133,7 @@ SqlVulnerabilityAssessmentResult
 | summarize count() by DatabaseName
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
+{{ chart.bar }}
 
 ### SQL Vulnerability List with Count by Risk Level
 
@@ -146,4 +143,4 @@ SqlVulnerabilityAssessmentResult
 | summarize count() by DatabaseName
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:deeppink;padding:5px">#barchart</span>
+{{ chart.bar }}

@@ -1,0 +1,28 @@
+nav:
+  - Containers:
+    - Azure Container Registry: Containers/Azure-Container-Registry.md
+    - Azure Kubernetes Service: Containers/Azure-Kubernetes-Service.md
+  - Databases:
+    - Azure SQL: Databases/Azure-SQL.md
+    - Cosmos DB: Databases/Cosmos-DB.md
+  - Monitoring:
+    - Security Center: Monitoring/Security-Center.md
+  - Networking:
+    - Application Gateway: Networking/Application-Gateway.md
+    - Load Balancer: Networking/Load-Balancer.md
+    - Traffic Manager: Networking/Traffic-Manager.md
+  - Storage:
+    - Azure Storage: Storage/Azure-Storage.md
+
+site_name: Kusto Queries
+theme:
+  name: material
+  logo: assets/AzureDataExplorerCluster.png
+  icon:
+    repo: fontawesome/brands/github
+repo_url: https://github.com/LearnAzure/kusto-queries
+extra_css: [extra.css]
+extra:
+  chart:
+    time: <type-timechart></type-timechart>
+    area: <type-areachart></type-areachart>
