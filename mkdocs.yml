@@ -22,7 +22,11 @@ theme:
     repo: fontawesome/brands/github
 repo_url: https://github.com/LearnAzure/kusto-queries
 extra_css: [extra.css]
+plugins:
+  - macros
 extra:
   chart:
+    bar: <type-barchart></type-barchart>
+    table: <type-table></type-table>
     time: <type-timechart></type-timechart>
     area: <type-areachart></type-areachart>
