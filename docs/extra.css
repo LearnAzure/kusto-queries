@@ -45,6 +45,7 @@ type-timechart,
 type-barchart,
 type-areachart
 {
+    display:inline-block;
     font-size:.85em;
     font-weight:bold;
     color:white;
