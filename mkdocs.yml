@@ -17,8 +17,8 @@ nav:
 site_name: Kusto Queries
 theme:
   name: material
-  logo: assets/AzureDataExplorerCluster.png
-  favicon: assets/AzureDataExplorerCluster.png
+  logo: assets/images/AzureDataExplorerCluster.png
+  favicon: assets/images/AzureDataExplorerCluster.png
   icon:
     repo: fontawesome/brands/github
   palette:
@@ -29,7 +29,7 @@ theme:
 repo_url: https://github.com/LearnAzure/kusto-queries
 repo_name: LearnAzure/kusto-queries
 edit_uri: edit/main/docs/
-extra_css: [extra.css]
+extra_css: [assets/styles/extra.css]
 plugins:
   - macros
   - search
