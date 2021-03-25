@@ -27,6 +27,7 @@ theme:
   features:
     - navigation.top    
 repo_url: https://github.com/LearnAzure/kusto-queries
+repo_name: LearnAzure/kusto-queries
 extra_css: [extra.css]
 plugins:
   - macros
