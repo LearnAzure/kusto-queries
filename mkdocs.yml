@@ -18,13 +18,21 @@ site_name: Kusto Queries
 theme:
   name: material
   logo: assets/AzureDataExplorerCluster.png
+  favicon: assets/AzureDataExplorerCluster.png
   icon:
     repo: fontawesome/brands/github
+  palette:
+    primary: grey
+    accent: light blue
+  features:
+    - navigation.top    
 repo_url: https://github.com/LearnAzure/kusto-queries
 extra_css: [extra.css]
 plugins:
   - macros
+  - search
   - pdf-export
+copyright: Copyright &copy; 2018 - 2021 Joshua Davis &amp; <a href="https://LearnAzure.com">LearnAzure.com</a>
 extra:
   chart:
     bar: <type-barchart></type-barchart>

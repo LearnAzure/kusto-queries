@@ -12,7 +12,7 @@ type-table {
 }
 
 type-table::after{
-    content: "#inline-table";
+    content: "#table";
 
 }
 

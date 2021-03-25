@@ -107,7 +107,7 @@ results | extend RiskLevel = 1 | where Risk == "High"
 | order by RiskLevel asc 
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:slateblue;padding:5px">#table</span>
+{{ chart.table }}
 
 ### SQL Vulnerability List with Count by Database
 
@@ -123,7 +123,7 @@ results | extend RiskLevel = 1 | where Risk == "High"
 | order by RiskLevel asc 
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:slateblue;padding:5px">#table</span>
+{{ chart.table }}
 
 ### SQL Vulnerability List with Count by Database
 

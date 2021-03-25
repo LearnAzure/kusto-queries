@@ -150,7 +150,7 @@ AzureDiagnostics
 | summarize Count=count() by tostring(Status), Resource
 | project Resource, Status, Count
 ```
-<span style="font-size:.85em;font-weight:bold;color:white;background:slateblue;padding:5px">#table</span>
+{{ chart.table }}
 
 ### All Errors (by backend)
 Display requests that resulted in some type of error (error code 400 or above).
@@ -163,7 +163,7 @@ AzureDiagnostics
 | summarize Count=count() by tostring(Status), Server
 | project Server, Status, Count
 ```
-<span style="font-size:.85em;font-weight:bold;color:white;background:slateblue;padding:5px">#table</span>
+{{ chart.table }}
 
 ### Bad Gateway (by gateway)
 Find requests that resulted in a server error of _502 - Bad Gateway_. The results display the total errors in increments of 5-minute blocks for the past 24 hours.
@@ -343,7 +343,7 @@ AzureDiagnostics
 | summarize Count=count() by requestUri_s, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:slateblue;padding:5px">#table</span>
+{{ chart.table }}
 {{ chart.time }}
 {{ chart.bar }}
 {{ chart.area }}
@@ -357,7 +357,7 @@ AzureDiagnostics
 | summarize Count=count() by requestUri_s, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:slateblue;padding:5px">#table</span>
+{{ chart.table }}
 {{ chart.time }}
 {{ chart.bar }}
 {{ chart.area }}
@@ -371,7 +371,7 @@ AzureDiagnostics
 | summarize Count=count() by requestUri_s, httpsStatus_d, bin(TimeGenerated, 5m)
 ```
 
-<span style="font-size:.85em;font-weight:bold;color:white;background:slateblue;padding:5px">#table</span>
+{{ chart.table }}
 
 ### Triggered Firewall Rules
 Report all OWASP rules that have been triggered. The results display the triggers in increments of 5-minute blocks for the past 24 hours.
