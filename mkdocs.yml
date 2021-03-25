@@ -6,6 +6,7 @@ nav:
     - Azure SQL: Databases/Azure-SQL.md
     - Cosmos DB: Databases/Cosmos-DB.md
   - Monitoring:
+    - Application Insights: Monitoring/Application-Insights.md
     - Security Center: Monitoring/Security-Center.md
   - Networking:
     - Application Gateway: Networking/Application-Gateway.md
@@ -40,8 +41,8 @@ plugins:
 copyright: Copyright &copy; 2018 - 2021 Joshua Davis &amp; <a href="https://LearnAzure.com">LearnAzure.com</a>
 extra:
   chart:
-    bar: <type-barchart></type-barchart>
     table: <type-table></type-table>
     time: <type-timechart></type-timechart>
+    bar: <type-barchart></type-barchart>
     area: <type-areachart></type-areachart>
     pie: <type-piechart></type-piechart>
