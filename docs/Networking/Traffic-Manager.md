@@ -6,7 +6,7 @@ Optimal rendering options are also included below each query.
 ### Status Report (by profile)
 Reports the status of a Traffic Manager Profile endpoint.  For each profile, the query reports either a `1` for the endpoint being _Up_ or `0` for the endpoint being _Down_. Being that a downstate is a high-priority incident, the results display the _minimum_ (e.g. `0`) of 1-minute blocks by each traffic manager profile.
 
-```
+```sql
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ProbeHealthStatusEvents"
 | extend Endpoint = strcat(Resource, "/", EndpointName_s)
@@ -20,7 +20,7 @@ AzureDiagnostics
 ### List Down Endpoints (by profile)
 Reports all Traffic Manager Profile endpoints that have been reported as "Down" within the past 5 minutes.
 
-```
+```sql
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ProbeHealthStatusEvents"
 | where Status_s == "Down"
@@ -32,7 +32,7 @@ AzureDiagnostics
 
 ### Total Queries by Endpoint (by profile)
 Displays the total number of queries by endpoint.  The results display the query count in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureMetrics
 | where ResourceId contains "TRAFFICMANAGERPROFILE"
 | where MetricName == "QpsByEndpoint"

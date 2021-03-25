@@ -6,7 +6,7 @@ Optimal rendering options are also included below each query.
 ### Average CPU Utilization by Database
 List all application gateways currently being monitored.  This query can be executed against `AzureMetrics` _or_ `AzureDiagnostics`.  
 
-```
+```sql
 AzureMetrics
 | where ResourceProvider == "MICROSOFT.SQL" and Resource != "MASTER"
 | where TimeGenerated > ago(24h)
@@ -20,7 +20,7 @@ AzureMetrics
 ### Size in MB by Database
 Display the size in MB for each database.  The results display the average size in increments of 1-hour blocks for the past 24 hours.
 
-```
+```sql
 AzureMetrics
 | where ResourceProvider == "MICROSOFT.SQL" and Resource != "MASTER"
 | where TimeGenerated > ago(24h)
@@ -36,7 +36,7 @@ AzureMetrics
 ### Successful Connections by Database
 Show the number of successful connecions by database.  The results display the average number of connections in increments of 5-minute blocks for the past 24 hours.
 
-```
+```sql
 AzureMetrics
 | where ResourceProvider == "MICROSOFT.SQL" and Resource != "MASTER"
 | where TimeGenerated > ago(24h)
@@ -50,7 +50,7 @@ AzureMetrics
 ### Unsuccessful Connections by Database
 Show the number of successful connecions by database.  The results display the average number of connections in increments of 5-minute blocks for the past 24 hours.
 
-```
+```sql
 AzureMetrics
 | where ResourceProvider == "MICROSOFT.SQL" and Resource != "MASTER"
 | where TimeGenerated > ago(24h)
@@ -64,7 +64,7 @@ AzureMetrics
 ### Blocked Firewall Attempts by Database
 Show the number of connection attempts, by database, block by the firewall.  The results display the average number of blocks in increments of 5-minute blocks for the past 24 hours.
 
-```
+```sql
 AzureMetrics
 | where ResourceProvider == "MICROSOFT.SQL" and Resource != "MASTER"
 | where TimeGenerated > ago(24h)
@@ -78,7 +78,7 @@ AzureMetrics
 ### CPU Utilization Percentage by Database
 Display the CPU utilization percentage by database.  The results display the average utilization in increments of 1-minute blocks for the past 1 hour.
 
-```
+```sql
 AzureMetrics
 | where ResourceProvider == "MICROSOFT.SQL" and Resource != "MASTER"
 | where TimeGenerated > ago(1h)
@@ -95,7 +95,7 @@ AzureMetrics
 ### List All SQL Vulnerabilities
 List all SQL vulnerabilities, sorted from 'High' risk to 'Low' riskk, from the last 3 days.
 
-```
+```sql
 let results = SqlVulnerabilityAssessmentResult
 | where TimeGenerated > ago(72h)
 | distinct Computer, DatabaseName, Title, Risk, Category, Description, Impact, Query, Remediation, BenchmarkReferences;
@@ -111,7 +111,7 @@ results | extend RiskLevel = 1 | where Risk == "High"
 
 ### SQL Vulnerability List with Count by Database
 
-```
+```sql
 let results = SqlVulnerabilityAssessmentResult
 | where TimeGenerated > ago(72h)
 | summarize count() by Computer, DatabaseName, Risk;
@@ -137,7 +137,7 @@ SqlVulnerabilityAssessmentResult
 
 ### SQL Vulnerability List with Count by Risk Level
 
-```
+```sql
 SqlVulnerabilityAssessmentResult
 | where TimeGenerated > ago(72h)
 | summarize count() by DatabaseName

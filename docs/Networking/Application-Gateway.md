@@ -8,14 +8,14 @@ Optimal rendering options are also included below each query.
 List all application gateways currently being monitored.  This query can be executed against `AzureMetrics` _or_ `AzureDiagnostics`.  
 
 **AzureMetrics**
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAY"
 | distinct Resource, ResourceGroup
 ```
 
 **AzureDiagnostics**
-```
+```sql
 AzureDiagnostics
 | where ResourceId contains "APPLICATIONGATEWAY"
 | distinct Resource, ResourceGroup
@@ -26,7 +26,7 @@ AzureDiagnostics
 ### List Monitored Application Gateways (comparitive list - join)
 List all application gateways currently being monitored.  This query joins both, `AzureMetrics` and `AzureDiagnostics`, to create an all-inclusive list of gateways being monitored.
 
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAY"
 | distinct Resource, ResourceGroup
@@ -45,7 +45,7 @@ AzureMetrics
 ### List Unmonitored Application Gateways (XOR list)
 List all application gateways currently being monitored, but only have one setting turned on - _either_ `AzureMetrics` or `AzureDiagnostics` - but, not both.  This creates a union of outer joins against both tables and returns results that are exclusive to either table and not found in both.  Additionally, the query reports which setting is missing for the application gateway.
 
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAY"
 | distinct Type, Resource, ResourceGroup
@@ -78,7 +78,7 @@ AzureMetrics
 
 ### Average Throughput per second (Bytes)
 Display the average throughput per second of the application gateways.  The results display the average of 5-minute blocks by each application gateway resource.  
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAY"
 | where MetricName == "Throughput"
@@ -91,7 +91,7 @@ AzureMetrics
 
 ### Average Throughput per second (Mb)
 The same as the query above, but converted to megabytes (Base 10).
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAY"
 | where MetricName == "Throughput"
@@ -105,7 +105,7 @@ AzureMetrics
 
 ### Unhealthy Hosts (Compared to Healthy)
 Show when hosts connected to the application gateway become unreachable.  This query will produce a comparison graph between the number of nodes that are healthy and those that are unhealthy for a _single_ application gateway.  The results display the average health in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAY" and Resource == "<your gateway's name>"
 | where MetricName == "UnhealthyHostCount" or MetricName == "HealthyHostCount"
@@ -114,11 +114,11 @@ AzureMetrics
 ```
 {{ chart.time }}
 {{ chart.area }}
-<span style="font-size:.85em;font-weight:bold;color:white;background:deepskyblue;padding:5px">#piechart</span>
+{{ chart.pie }}
 
 ### Unhealthy Hosts (for all gateways)
 Show when hosts connected to the application gateway become unreachable.  This query will produce the number of nodes that are unhealthy for _all_ application gateways.  The results display the average disconnected state in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAY"
 | where MetricName == "UnhealthyHostCount"
@@ -130,7 +130,7 @@ AzureMetrics
 
 ### Healthy Hosts (for all gateways)
 Show healthy, reachable hosts connected to the application gateway.  This query will produce the number of nodes that are healthy for _all_ application gateways.  The results display the average connected state in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAY"
 | where MetricName == "HealthyHostCount"
@@ -142,7 +142,7 @@ AzureMetrics
 
 ### All Errors (by gateway)
 Display requests that resulted in some type of error (error code 400 or above).
-```
+```sql
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayAccessLog"
 | extend Status = toint(httpStatus_d)
@@ -154,7 +154,7 @@ AzureDiagnostics
 
 ### All Errors (by backend)
 Display requests that resulted in some type of error (error code 400 or above).
-```
+```sql
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayAccessLog"
 | extend Status = toint(serverStatus_s)
@@ -167,7 +167,7 @@ AzureDiagnostics
 
 ### Bad Gateway (by gateway)
 Find requests that resulted in a server error of _502 - Bad Gateway_. The results display the total errors in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureDiagnostics 
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayAccessLog" 
 | where serverStatus_s == 502
@@ -179,7 +179,7 @@ AzureDiagnostics
 
 ### All Operations (for all gateways)
 Report all operations on the gateways in the subscription. The results display the total number of operations in increments of 15-minute blocks for the past 24 hours.
-```
+```sql
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.NETWORK" and ResourceType == "APPLICATIONGATEWAYS"
 | summarize count() by OperationName, bin(TimeGenerated, 15m)
@@ -192,7 +192,7 @@ AzureDiagnostics
 
 ### Total Connections (by gateway)
 Report the number of total connections per each application gateway.  The results display the total number of connections in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAYS"
 | where MetricName == "CurrentConnections"
@@ -206,7 +206,7 @@ AzureMetrics
 
 ### Average Connection Count (by gateway)
 Report the number of average connections per application gateway.  The results display the average number of connections in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAYS"
 | where MetricName == "CurrentConnections"
@@ -220,7 +220,7 @@ AzureMetrics
 
 ### Average Backend Connection Time (by gateway)
 Report the average backend connection time per application gateway.  The results display the average number of connections in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAYS"
 | where MetricName == "BackendConnectTime"
@@ -233,7 +233,7 @@ AzureMetrics
 
 ### Average Total Time (by gateway)
 Report the average time for a request - beginning to end - per each application gateway.  The results display the average number of connections in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAYS"
 | where MetricName == "ApplicationGatewayTotalTime"
@@ -246,7 +246,7 @@ AzureMetrics
 
 ### Average Latency (per backend server)
 Report the average latency per backend servers connected to your application gateway(s). The results display the average latency in seconds of servers connected to the backend pools in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayAccessLog"
 | summarize avg(todouble(serverResponseTime_s)) by serverRouted_s, bin(TimeGenerated, 5m)
@@ -258,7 +258,7 @@ AzureDiagnostics
 
 ### Total Requests (by gateway)
 Report the total number of requests per application gateway.  The results display the total number of requests in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAYS"
 | where MetricName == "TotalRequests"
@@ -271,7 +271,7 @@ AzureMetrics
 
 ### Average Requests (by gateway)
 Report the average number of requests per application gateway.  The results display the average number of requests in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAYS"
 | where MetricName == "TotalRequests"
@@ -285,7 +285,7 @@ AzureMetrics
 
 ### Total Failed Requests (by gateway)
 Report the total number of failed requests per application gateway.  The results display the total number of failed requests in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAYS"
 | where MetricName == "FailedRequests"
@@ -298,7 +298,7 @@ AzureMetrics
 
 ### Average Failed Requests (by gateway)
 Report the average number of failed requests per application gateway.  The results display the average number of failed requests in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureMetrics
 | where ResourceId contains "APPLICATIONGATEWAYS"
 | where MetricName == "FailedRequests"
@@ -311,7 +311,7 @@ AzureMetrics
 
 ### Total Successful Requests (per backend server)
 Report the total number of successful requests per backend servers connected to your application gateway(s). The results display the total number of successful requests to servers connected to the backend pools in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayAccessLog"
 | where toint(serverStatus_s) < 400
@@ -324,7 +324,7 @@ AzureDiagnostics
 
 ### Total Failed Requests (per backend server)
 Report the total number of failed requests per backend servers connected to your application gateway(s). The results display the total number of failed requests to servers connected to the backend pools in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayAccessLog"
 | where toint(serverStatus_s) >= 400
@@ -337,7 +337,7 @@ AzureDiagnostics
 
 ### Total Requests (per API)
 Report the total number of requests per API endpoint. The results display the total number of requests to each served endpoint in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayAccessLog"
 | summarize Count=count() by requestUri_s, bin(TimeGenerated, 5m)
@@ -350,7 +350,7 @@ AzureDiagnostics
 
 ### Failed Requests (per API)
 Report the failed number of requests per API endpoint. The results display the failed number of requests to each served endpoint in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayAccessLog"
 | where httpStatus_d >= 400
@@ -364,7 +364,7 @@ AzureDiagnostics
 
 ### Failed Requests, include Status (per API)
 Report the failed number of requests per API endpoint. The results display the failed number of requests to each served endpoint in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayAccessLog"
 | where httpStatus_d >= 400
@@ -375,7 +375,7 @@ AzureDiagnostics
 
 ### Triggered Firewall Rules
 Report all OWASP rules that have been triggered. The results display the triggers in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureDiagnostis
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayFirewallLog"
 | summarize Count=count() by ruleId_s, bin(TimeGenerated, 5m)
@@ -383,11 +383,11 @@ AzureDiagnostis
 {{ chart.time }}
 {{ chart.bar }}
 {{ chart.area }}
-<span style="font-size:.85em;font-weight:bold;color:white;background:deepskyblue;padding:5px">#piechart</span>
+{{ chart.pie }}
 
 ### Blocked Firewall Rules
 Report all requests that resulted in a firewall block due to an OWASP rule.
-```
+```sql
 AzureDiagnostics 
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayFirewallLog" 
 | where action_s == "Blocked" 
@@ -396,12 +396,12 @@ AzureDiagnostics
 {{ chart.time }}
 {{ chart.bar }}
 {{ chart.area }}
-<span style="font-size:.85em;font-weight:bold;color:white;background:deepskyblue;padding:5px">#piechart</span>
+{{ chart.pie }}
 
 ### Count Blocked Firewall Rules
 
 Group and count all blocked requests by rule violation. The results display the triggers in increments of 5-minute blocks for the past 24 hours.
-```
+```sql
 AzureDiagnostics 
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayFirewallLog" 
 | where action_s == "Blocked" 
@@ -411,4 +411,4 @@ AzureDiagnostics
 {{ chart.time }}
 {{ chart.bar }}
 {{ chart.area }}
-<span style="font-size:.85em;font-weight:bold;color:white;background:deepskyblue;padding:5px">#piechart</span>
+{{ chart.pie }}

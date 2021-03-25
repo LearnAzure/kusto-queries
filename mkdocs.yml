@@ -30,6 +30,9 @@ repo_url: https://github.com/LearnAzure/kusto-queries
 repo_name: LearnAzure/kusto-queries
 edit_uri: edit/main/docs/
 extra_css: [assets/styles/extra.css]
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
 plugins:
   - macros
   - search
@@ -41,3 +44,4 @@ extra:
     table: <type-table></type-table>
     time: <type-timechart></type-timechart>
     area: <type-areachart></type-areachart>
+    pie: <type-piechart></type-piechart>

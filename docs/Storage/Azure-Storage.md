@@ -6,7 +6,7 @@ Optimal rendering options are also included below each query.
 ### List Last Regeneration of Account Keys
 List the last attempt and status of changing account keys (within the past 3 days) for the storage accounts.
 
-```
+```sql
 AzureActivity
 | where OperationName == "Regenerate Storage Account Keys" and ActivityStatus != "Started"
 | where TimeGenerated > ago(3d)

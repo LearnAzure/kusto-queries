@@ -33,17 +33,26 @@ type-barchart::after {
 }
 
 type-areachart {
-    background:darkorange;;
+    background:darkorange;
 }
 
 type-areachart::after {
     content: "#areachart";
 }
 
+type-piechart {
+    background:deepskyblue;
+}
+
+type-piechart::after {
+    content: "#piechart";
+}
+
 type-table, 
 type-timechart,
 type-barchart,
-type-areachart
+type-areachart,
+type-piechart
 {
     display:inline-block;
     font-size:.85em;
